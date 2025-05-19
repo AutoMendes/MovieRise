@@ -1,0 +1,64 @@
+/* App.css */
+body {
+    background: #f8f9fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+header {
+    background: linear-gradient(90deg, #212529 60%, #343a40 100%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-bottom: 2px solid #ffc107;
+}
+
+header .logo {
+    font-weight: bold;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: #ffc107;
+    text-shadow: 1px 1px 2px #000;
+}
+
+header .subtitle {
+    color: #adb5bd;
+    font-size: 1rem;
+    margin-left: 8px;
+}
+
+footer {
+    background: #212529;
+    color: #fff;
+    border-top: 2px solid #ffc107;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+}
+
+footer .footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    font-size: 1rem;
+}
+
+.sidebar {
+    border-right: 1px solid #dee2e6;
+    min-height: 100vh;
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+.btn.active, .btn:focus {
+    background: #495057 !important;
+    color: #fff !important;
+    border: none;
+}
+.btn {
+    border: none;
+    color: #adb5bd;
+    transition: background 0.2s, color 0.2s;
+}
+.btn:hover {
+    background: #343a40 !important;
+    color: #fff !important;
+}
