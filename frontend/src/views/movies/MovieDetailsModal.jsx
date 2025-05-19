@@ -16,7 +16,7 @@ const MovieDetailsModal = ({ movie, show, onClose }) => {
                     <div className="modal-body">
                         <div className="d-flex flex-column align-items-center">
                             <img
-                                src={`../src${movie.photo}`}
+                                src={`/uploads/${movie.photo}`}
                                 alt={movie.title}
                                 style={{ width: "200px", height: "300px", objectFit: "cover" }}
                             />

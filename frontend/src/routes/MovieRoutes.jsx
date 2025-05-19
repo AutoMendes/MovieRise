@@ -1,17 +1,17 @@
 ﻿
 import React from "react";
 import { Route } from "react-router-dom";
-import MovieList from "../components/MovieList";
-import MovieAdd from "../components/MovieAdd";
-import MovieEdit from "../components/MovieEdit";
+import MovieAdd from "../views/movies/MovieAdd.jsx";
+import MovieEdit from "../views/movies/MovieEdit.jsx";
+import MovieList from "../views/movies/MovieList.jsx";
+
 
 const MovieRoutes = () => {
     return (
         <>
-            <Route path="/" element={<h1>Movies</h1>} />
+            <Route path="/movies" element={<MovieList />} />
             <Route path="/movies/add" element={<MovieAdd />} />
             <Route path="/movies/edit/:id" element={<MovieEdit />} />
-            <Route path="/movies" element={<MovieList />} />
         </>
     );
 };

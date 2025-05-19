@@ -1,9 +1,10 @@
 ﻿// src/routes/GenreRoutes.js
 import React from "react";
 import { Route } from "react-router-dom";
-import GenreList from "../views/GenreList.jsx";
-import GenreAdd from "../views/GenreAdd.jsx";
-import GenreEdit from "../views/GenreEdit.jsx";
+import GenreList from "../views/genres/GenreList.jsx";
+import GenreAdd from "../views/genres/GenreAdd.jsx";
+import GenreEdit from "../views/genres/GenreEdit.jsx";
+
 
 const GenreRoutes = () => {
     return (

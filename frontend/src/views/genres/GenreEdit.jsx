@@ -1,58 +1,71 @@
 ﻿import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const GenreEdit = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
+const GenreEdit = ({ show, genreId, onClose, onSaved }) => {
     const [description, setDescription] = useState("");
 
     useEffect(() => {
-        loadGenre();
-    }, []);
+        if (show && genreId) {
+            loadGenre();
+        }
+    }, [show, genreId]);
 
     const loadGenre = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/genres/list`);
-            const genre = response.data.find((g) => g.id === parseInt(id));
+            const response = await axios.get("http://localhost:3000/genres/list");
+            const genre = response.data.find((g) => g.id === genreId);
             if (genre) setDescription(genre.description);
         } catch (error) {
-            console.error("Erro ao carregar o gênero:", error);
+            alert("Erro ao carregar o gênero.");
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:3000/genres/update/${id}`, { description });
+            await axios.put(`http://localhost:3000/genres/update/${genreId}`, { description });
             alert("Gênero atualizado com sucesso!");
-            navigate("/genres");
+            onSaved();
         } catch (error) {
-            console.error("Erro ao atualizar o gênero:", error);
-            alert("Erro ao atualizar o gênero. Verifique o console para mais detalhes.");
+            alert("Erro ao atualizar o gênero.");
         }
     };
 
+    if (!show) return null;
+
     return (
-        <div className="container mt-4">
-            <h2>Editar Gênero</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group mb-3">
-                    <label htmlFor="description">Descrição</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
+        <div className="modal fade show" style={{ display: "block" }} tabIndex="-1">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">Editar Gênero</h5>
+                        <button type="button" className="btn-close" onClick={onClose}></button>
+                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="modal-body">
+                            <div className="form-group mb-3">
+                                <label>Descrição</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={onClose}>
+                                Fechar
+                            </button>
+                            <button type="submit" className="btn btn-primary">
+                                Salvar Alterações
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <button type="submit" className="btn btn-primary">
-                    Atualizar
-                </button>
-            </form>
+            </div>
         </div>
     );
 };

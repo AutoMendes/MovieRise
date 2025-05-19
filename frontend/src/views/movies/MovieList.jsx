@@ -4,7 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import MovieDetailsModal from "./MovieDetailsModal.jsx";
 import MovieEdit from "./MovieEdit.jsx";
-import MovieAdd from "./MovieAdd.jsx"
+import MovieAdd from "./MovieAdd.jsx";
+import MovieCard from "../../components/MovieCard.jsx";
 
 const urlAPI = "http://localhost:3000/movies/list";
 const MovieList = () => {
@@ -15,7 +16,7 @@ const MovieList = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 9; // 3 por linha, 3 linhas por página
+    const itemsPerPage = 3; // 3 por linha, 3 linhas por página
 
     useEffect(() => {
         loadMovies();
@@ -81,8 +82,6 @@ const MovieList = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentMovies = movies.slice(indexOfFirstItem, indexOfLastItem);
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
     // Divide os filmes em linhas de 3
     const rows = [];
     for (let i = 0; i < currentMovies.length; i += 3) {
@@ -104,37 +103,12 @@ const MovieList = () => {
                     <div className="w-100 d-flex mb-4" key={rowIndex}>
                         {row.map((movie) => (
                             <div className="col-md-4 d-flex" key={movie.id}>
-                                <div className="card flex-fill text-center shadow-sm mx-2">
-                                    <img
-                                        src={movie.photo}
-                                        className="card-img-top"
-                                        alt={movie.title}
-                                        style={{ height: "180px", objectFit: "cover" }}
-                                    />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{movie.title}</h5>
-                                        <div className="d-flex justify-content-center gap-2 mt-2">
-                                            <button
-                                                className="btn btn-outline-primary btn-sm"
-                                                onClick={() => handleDetailsClick(movie)}
-                                            >
-                                                Detalhes
-                                            </button>
-                                            <button
-                                                className="btn btn-outline-info btn-sm"
-                                                onClick={() => handleEdit(movie)}
-                                            >
-                                                Editar
-                                            </button>
-                                            <button
-                                                className="btn btn-outline-danger btn-sm"
-                                                onClick={() => handleDelete(movie.id)}
-                                            >
-                                                Excluir
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <MovieCard
+                                    movie={movie}
+                                    onDetails={handleDetailsClick}
+                                    onEdit={handleEdit}
+                                    onDelete={handleDelete}
+                                />
                             </div>
                         ))}
                     </div>
@@ -146,7 +120,7 @@ const MovieList = () => {
                 <ul className="pagination justify-content-center">
                     {Array.from({ length: Math.ceil(movies.length / itemsPerPage) }, (_, index) => (
                         <li key={index} className={`page-item ${currentPage === index + 1 ? "active" : ""}`}>
-                            <button className="page-link" onClick={() => paginate(index + 1)}>
+                            <button className="page-link" onClick={() => setCurrentPage(index + 1)}>
                                 {index + 1}
                             </button>
                         </li>

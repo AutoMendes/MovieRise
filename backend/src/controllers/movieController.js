@@ -58,12 +58,12 @@ controllers.filme_create = async (req, res) => {
         // Verifica se um arquivo foi enviado
         let photoPath = null;
         if (req.file) {
-            const uploadDir = path.join(__dirname, "../../../frontend/src/uploads");
+            const uploadDir = path.join(__dirname, "../../../frontend/public/uploads");
             if (!fs.existsSync(uploadDir)) {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
             const fileName = `${req.file.originalname}`;
-            photoPath = `/uploads/${fileName}`;
+            photoPath = fileName
             fs.writeFileSync(path.join(uploadDir, fileName), req.file.buffer);
         }
 

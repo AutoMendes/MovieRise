@@ -10,7 +10,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import MovieAdd from "./views/movies/MovieAdd.jsx";
 import MovieEdit from "./views/movies/MovieEdit.jsx";
-import "./App.css"; 
+import "./App.css";
+import MovieList from "./views/movies/MovieList.jsx"; 
 
 const App = () => {
     return (
@@ -22,6 +23,7 @@ const App = () => {
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/movies/add" element={<MovieAdd />} />
                         <Route path="/movies/edit/:id" element={<MovieEdit />} />
+                        <Route path="/movies" element={<MovieList />} />
                         <Route path="/genres" element={<GenreList />} />
                         <Route path="/genres/add" element={<GenreAdd />} />
                         <Route path="/genres/edit/:id" element={<GenreEdit />} />

@@ -1,10 +1,14 @@
 ﻿import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import GenreEdit from "./GenreEdit.jsx";
+import GenreAdd from "./GenreAdd.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const GenreList = () => {
     const [genres, setGenres] = useState([]);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [addModalOpen, setAddModalOpen] = useState(false);
+    const [selectedGenreId, setSelectedGenreId] = useState(null);
 
     useEffect(() => {
         loadGenres();
@@ -15,27 +19,37 @@ const GenreList = () => {
             const response = await axios.get("http://localhost:3000/genres/list");
             setGenres(response.data);
         } catch (error) {
-            console.error("Erro ao carregar os gêneros:", error);
+            alert("Erro ao carregar os gêneros.");
         }
     };
 
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm("Tem certeza que deseja excluir este gênero?");
-        if (confirmDelete) {
+        if (window.confirm("Tem certeza que deseja excluir este gênero?")) {
             try {
                 await axios.delete(`http://localhost:3000/genres/delete/${id}`);
                 alert("Gênero excluído com sucesso!");
                 loadGenres();
             } catch (error) {
-                console.error("Erro ao excluir o gênero:", error);
-                alert("Erro ao excluir o gênero. Verifique o console para mais detalhes.");
+                alert("Erro ao excluir o gênero.");
             }
         }
+    };
+
+    const handleEditClick = (id) => {
+        setSelectedGenreId(id);
+        setEditModalOpen(true);
+    };
+
+    const handleAddClick = () => {
+        setAddModalOpen(true);
     };
 
     return (
         <div className="container mt-4">
             <h2>Lista de Gêneros</h2>
+            <button className="btn btn-success mb-3" onClick={handleAddClick}>
+                Adicionar Gênero
+            </button>
             <table className="table table-hover table-striped">
                 <thead className="thead-dark">
                 <tr>
@@ -50,9 +64,12 @@ const GenreList = () => {
                         <td>{index + 1}</td>
                         <td>{genre.description}</td>
                         <td>
-                            <Link to={`/genres/edit/${genre.id}`} className="btn btn-outline-info me-2">
+                            <button
+                                className="btn btn-outline-info me-2"
+                                onClick={() => handleEditClick(genre.id)}
+                            >
                                 Editar
-                            </Link>
+                            </button>
                             <button
                                 className="btn btn-outline-danger"
                                 onClick={() => handleDelete(genre.id)}
@@ -64,6 +81,23 @@ const GenreList = () => {
                 ))}
                 </tbody>
             </table>
+            <GenreEdit
+                show={editModalOpen}
+                genreId={selectedGenreId}
+                onClose={() => setEditModalOpen(false)}
+                onSaved={() => {
+                    setEditModalOpen(false);
+                    loadGenres();
+                }}
+            />
+            <GenreAdd
+                show={addModalOpen}
+                onClose={() => setAddModalOpen(false)}
+                onSaved={() => {
+                    setAddModalOpen(false);
+                    loadGenres();
+                }}
+            />
         </div>
     );
 };
