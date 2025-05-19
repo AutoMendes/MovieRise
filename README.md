@@ -1,4 +1,4 @@
-# 🎬 Projeto Filmes – Node + Express + React - MovieRise
+# 🎬 Projeto MovieRise – Node + Express + React
 
 ## 📚 Descrição
 
