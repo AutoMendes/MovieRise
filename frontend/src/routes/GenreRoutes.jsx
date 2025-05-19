@@ -1,5 +1,4 @@
-﻿// src/routes/GenreRoutes.js
-import React from "react";
+﻿import React from "react";
 import { Route } from "react-router-dom";
 import GenreList from "../views/genres/GenreList.jsx";
 import GenreAdd from "../views/genres/GenreAdd.jsx";

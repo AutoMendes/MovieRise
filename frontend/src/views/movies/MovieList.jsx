@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import MovieDetailsModal from "./MovieDetailsModal.jsx";
@@ -16,20 +17,19 @@ const MovieList = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3; // 3 por linha, 3 linhas por página
+    const itemsPerPage = 3; 
 
     useEffect(() => {
         loadMovies();
     }, []);
 
     const loadMovies = async () => {
-        axios.get(urlAPI).then(
-            (response) => {
-                setMovies(response.data);
-            }
-        ).catch((error) => {
+        try {
+            const response = await axios.get(urlAPI);
+            setMovies(response.data);
+        } catch (error) {
             console.error("Erro ao carregar os filmes:", error);
-        })
+        }
     };
 
     const handleEdit = (movie) => {
@@ -54,17 +54,26 @@ const MovieList = () => {
     };
 
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm("Tem certeza que deseja excluir este filme?");
-        if (confirmDelete) {
+        const result = await Swal.fire({
+            title: "Tem a certeza que pretende eliminar o filme?",
+            text: "Esta ação não pode ser desfeita!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Cancelar"
+        });
+
+        if (result.isConfirmed) {
             try {
                 await axios.delete(`http://localhost:3000/movies/delete/${id}`);
-                alert("Filme excluído com sucesso!");
+                await Swal.fire("Excluído!", "Filme excluído com sucesso!", "success");
                 loadMovies();
-            }
-            catch (error) {
+            } catch (error) {
                 console.error("Erro ao excluir o filme:", error);
-                alert("Erro ao excluir o filme. Verifique o console para mais detalhes.");
+                Swal.fire("Erro!", "Erro ao excluir o filme. Verifique o console para mais detalhes.", "error");
             }
+        } else {
+            Swal.fire("Cancelado", "A exclusão do filme foi cancelada.", "info");
         }
     };
 

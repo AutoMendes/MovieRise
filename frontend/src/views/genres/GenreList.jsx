@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import GenreEdit from "./GenreEdit.jsx";
 import GenreAdd from "./GenreAdd.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,19 +20,30 @@ const GenreList = () => {
             const response = await axios.get("http://localhost:3000/genres/list");
             setGenres(response.data);
         } catch (error) {
-            alert("Erro ao carregar os gêneros.");
+            Swal.fire("Erro!", "Erro ao carregar os gêneros.", "error");
         }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm("Tem certeza que deseja excluir este gênero?")) {
+        const result = await Swal.fire({
+            title: "Tem certeza que deseja excluir este gênero?",
+            text: "Esta ação não pode ser desfeita!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Cancelar"
+        });
+
+        if (result.isConfirmed) {
             try {
                 await axios.delete(`http://localhost:3000/genres/delete/${id}`);
-                alert("Gênero excluído com sucesso!");
+                await Swal.fire("Excluído!", "Gênero excluído com sucesso!", "success");
                 loadGenres();
             } catch (error) {
-                alert("Erro ao excluir o gênero.");
+                Swal.fire("Erro!", "Erro ao excluir o gênero.", "error");
             }
+        } else {
+            Swal.fire("Cancelado", "A exclusão do gênero foi cancelada.", "info");
         }
     };
 

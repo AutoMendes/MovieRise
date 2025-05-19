@@ -29,19 +29,19 @@ const MovieCard = ({ movie, onDetails, onEdit, onDelete }) => (
             </h5>
             <div className="d-flex justify-content-center gap-2 flex-wrap">
                 <button
-                    className="btn btn-outline-primary btn-sm"
+                    className="btn btn-primary btn-sm"
                     onClick={() => onDetails(movie)}
                 >
                     Detalhes
                 </button>
                 <button
-                    className="btn btn-outline-info btn-sm"
+                    className="btn btn-info btn-sm"
                     onClick={() => onEdit(movie)}
                 >
                     Editar
                 </button>
                 <button
-                    className="btn btn-outline-danger btn-sm"
+                    className="btn btn-danger btn-sm"
                     onClick={() => onDelete(movie.id)}
                 >
                     Excluir
