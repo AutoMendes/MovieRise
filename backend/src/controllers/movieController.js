@@ -144,6 +144,14 @@ controllers.filme_delete = async (req, res) => {
             return res.status(404).json({ error: "Filme não encontrado" });
         }
 
+        // Remove a foto do disco, se existir
+        if (movie.photo) {
+            const photoPath = path.join(__dirname, "../../../frontend/public/uploads", movie.photo);
+            if (fs.existsSync(photoPath)) {
+                fs.unlinkSync(photoPath);
+            }
+        }
+
         await movie.destroy();
         res.json({ message: "Filme excluído com sucesso" });
     } catch (err) {

@@ -67,7 +67,17 @@ const MovieList = () => {
             try {
                 await axios.delete(`http://localhost:3000/movies/delete/${id}`);
                 await Swal.fire("Excluído!", "Filme excluído com sucesso!", "success");
-                loadMovies();
+
+                // Verifica se era o último item da página
+                const totalItems = movies.length - 1;
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                if (currentPage > totalPages && currentPage > 1) {
+                    setCurrentPage(currentPage - 1);
+                    // Aguarda o setCurrentPage antes de recarregar
+                    setTimeout(loadMovies, 0);
+                } else {
+                    loadMovies();
+                }
             } catch (error) {
                 console.error("Erro ao excluir o filme:", error);
                 Swal.fire("Erro!", "Erro ao excluir o filme. Verifique o console para mais detalhes.", "error");
